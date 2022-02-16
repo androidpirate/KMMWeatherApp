@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="min_max_tag">Min\\Max: </string>
+    <string name="min_tag">Min: </string>
+    <string name="max_tag">Max: </string>
+</resources>
