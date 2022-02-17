@@ -2,12 +2,43 @@ package com.example.weatherapp
 
 import com.example.weatherapp.network.WeatherApiServiceImp
 import com.example.weatherapp.repo.WeatherRepository
+import io.ktor.client.*
+import io.ktor.client.engine.okhttp.*
+import io.ktor.client.features.json.*
+import io.ktor.client.features.json.serializer.*
+import io.ktor.client.features.logging.*
+import java.util.concurrent.TimeUnit
 
 actual class Platform actual constructor() {
-    actual val platform: String = "Android ${android.os.Build.VERSION.SDK_INT}"
 
     actual suspend fun fetchCurrentWeather(city: String): WeatherRepository.UIModel {
-        val repo = WeatherRepository(WeatherApiServiceImp(), city)
+        val client = httpClient()
+        val repo = WeatherRepository(WeatherApiServiceImp(client), city)
         return repo.fetchCurrentWeather()
+    }
+
+
+}
+
+actual fun httpClient(config: HttpClientConfig<*>.() -> Unit) = HttpClient(OkHttp) {
+    config(this)
+
+    install(JsonFeature) {
+        serializer = KotlinxSerializer(kotlinx.serialization.json.Json {
+                prettyPrint = true
+                isLenient = true
+                ignoreUnknownKeys = true
+            })
+        }
+    install(Logging) {
+        logger = Logger.DEFAULT
+        level = LogLevel.ALL
+    }
+
+    engine {
+        config {
+            retryOnConnectionFailure(true)
+            connectTimeout(5, TimeUnit.SECONDS)
+        }
     }
 }

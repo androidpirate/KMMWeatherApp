@@ -6,27 +6,11 @@ import io.ktor.client.features.json.serializer.*
 import io.ktor.client.features.logging.*
 import io.ktor.client.request.*
 
-class WeatherApiServiceImp: WeatherApiService {
-
-    private val httpClient by lazy {
-        HttpClient() {
-            install(JsonFeature) {
-                serializer = KotlinxSerializer(kotlinx.serialization.json.Json {
-                    prettyPrint = true
-                    isLenient = true
-                    ignoreUnknownKeys = true
-                })
-            }
-            install(Logging) {
-                logger = Logger.DEFAULT
-                level = LogLevel.ALL
-            }
-        }
-    }
+class WeatherApiServiceImp(private val client: HttpClient): WeatherApiService {
 
     override
     suspend fun fetchCurrentWeather(city: String): ApiResponse {
-        return httpClient.get(BASE_URL) {
+        return client.get(BASE_URL) {
             parameter(LOCATION_PARAM, city)
             parameter(UNITS_PARAM, UNITS_METRIC)
             parameter(API_PARAM, API_KEY)

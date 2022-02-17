@@ -1,10 +1,11 @@
 package com.example.weatherapp
 
-import com.example.weatherapp.network.ApiResponse
 import com.example.weatherapp.repo.WeatherRepository
+import io.ktor.client.*
 
 expect class Platform() {
-    val platform: String
 
     suspend fun fetchCurrentWeather(city: String): WeatherRepository.UIModel
 }
+
+expect fun httpClient(config: HttpClientConfig<*>.() -> Unit = {}): HttpClient
