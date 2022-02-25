@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
         coroutineScope.launch {
             kotlin.runCatching {
-                platform.fetchCurrentWeather("London")
+                platform.fetchCurrentWeather("Los Angeles")
             }.onSuccess {
                 displayTemp(it)
             }.onFailure {
