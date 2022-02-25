@@ -16,10 +16,15 @@ class WeatherRepository(private val service: WeatherApiServiceImp, private val c
     }
 
     // TODO: This method should be implemented in the ViewModel class instead
-    private suspend fun toUIModel(response: ApiResponse): UIModel{
+    private fun toUIModel(response: ApiResponse): UIModel{
         return UIModel(
             response.name,
             response.main.temp.toInt(),
+            response.weatherCondition[0].main,
+            response.weatherCondition[0].description,
+            ICON_BASE_URI
+                    + response.weatherCondition[0].icon
+                    + ICON_URI_SUFFIX,
             response.main.temp_min.toInt(),
             response.main.temp_max.toInt())
     }
@@ -28,8 +33,16 @@ class WeatherRepository(private val service: WeatherApiServiceImp, private val c
     data class UIModel(
         val city: String,
         val temp: Int,
+        val weatherCondition: String,
+        val weatherConditionDesc: String,
+        val weatherConditionIconUri: String,
         val minTemp: Int,
         val maxTemp: Int
     )
+
+    companion object {
+        const val ICON_BASE_URI = "https://openweathermap.org/img/wn/"
+        const val ICON_URI_SUFFIX = "@2x.png"
+    }
 
 }
