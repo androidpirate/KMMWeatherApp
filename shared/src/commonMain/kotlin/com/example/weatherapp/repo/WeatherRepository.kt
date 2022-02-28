@@ -1,6 +1,6 @@
 package com.example.weatherapp.repo
 
-import com.example.weatherapp.network.ApiResponse
+import com.example.weatherapp.network.WeatherResponse
 import com.example.weatherapp.network.WeatherApiServiceImp
 
 class WeatherRepository(private val service: WeatherApiServiceImp, private val city: String) {
@@ -16,17 +16,17 @@ class WeatherRepository(private val service: WeatherApiServiceImp, private val c
     }
 
     // TODO: This method should be implemented in the ViewModel class instead
-    private fun toUIModel(response: ApiResponse): UIModel{
+    private fun toUIModel(response: WeatherResponse): UIModel{
         return UIModel(
             response.name,
-            response.main.temp.toInt(),
-            response.weatherCondition[0].main,
-            response.weatherCondition[0].description,
+            response.temperatureInfo.temp.toInt(),
+            response.weatherCondition[0].weatherConditionName,
+            response.weatherCondition[0].weatherConditionDescription,
             ICON_BASE_URI
-                    + response.weatherCondition[0].icon
+                    + response.weatherCondition[0].weatherConditionIcon
                     + ICON_URI_SUFFIX,
-            response.main.temp_min.toInt(),
-            response.main.temp_max.toInt())
+            response.temperatureInfo.temp_min.toInt(),
+            response.temperatureInfo.temp_max.toInt())
     }
 
     // TODO: This data class should be implemented in the ViewModel class instead

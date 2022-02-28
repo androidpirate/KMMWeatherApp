@@ -6,11 +6,12 @@ import kotlinx.serialization.Serializable
 // This file might be extended to cover all the fields of the JSON response
 
 @Serializable
-data class ApiResponse(
+data class WeatherResponse(
     val coord: Coord,
-    val main: Main,
+    @SerialName("main")
+    val temperatureInfo: TemperatureInfo,
     @SerialName("weather")
-    val weatherCondition: List<Weather>,
+    val weatherCondition: List<WeatherCondition>,
     val name: String,
 )
 @Serializable
@@ -19,14 +20,18 @@ data class Coord(
     val lat: Float
 )
 @Serializable
-data class Weather(
-    val id: Int,
-    val main: String,
-    val description: String,
-    val icon: String
+data class WeatherCondition(
+    @SerialName("id")
+    val weatherConditionId: Int,
+    @SerialName("main")
+    val weatherConditionName: String,
+    @SerialName("description")
+    val weatherConditionDescription: String,
+    @SerialName("icon")
+    val weatherConditionIcon: String
 )
 @Serializable
-data class Main(
+data class TemperatureInfo(
     val temp: Float,
     val feels_like: Float,
     val temp_min: Float,

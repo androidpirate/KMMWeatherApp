@@ -1,15 +1,12 @@
 package com.example.weatherapp.network
 
 import io.ktor.client.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
-import io.ktor.client.features.logging.*
 import io.ktor.client.request.*
 
 class WeatherApiServiceImp(private val client: HttpClient): WeatherApiService {
 
     override
-    suspend fun fetchCurrentWeather(city: String): ApiResponse {
+    suspend fun fetchCurrentWeather(city: String): WeatherResponse {
         return client.get(BASE_URL) {
             parameter(LOCATION_PARAM, city)
             parameter(UNITS_PARAM, UNITS_METRIC)
